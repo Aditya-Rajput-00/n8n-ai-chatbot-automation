@@ -48,38 +48,15 @@ The chatbot is suitable for business websites, automation demos, and AI product 
 
 ## ⚙️ Workflow Flow
 
-Frontend UI
-   ↓
-Webhook Trigger (n8n)
-   ↓
-AI Agent (OpenRouter Model)
-   ↓
-Chat Memory (Context)
-   ↓
-Respond to Webhook
-   ↓
-Frontend UI
+Frontend UI → Webhook → AI Agent → Chat Memory → Response
 
 ---
 
-## 📂 Project Structure
+## 📂 Folder Structure
 
-n8n-ai-chatbot-automation/
-│
-├── frontend/
-│   └── chatbot.html
-│
-├── workflow/
-│   └── n8n-workflow.json
-│
-├── assets/
-│   ├── chatbot-ui.png
-│   ├── workflow.png
-│   └── result.png
-│
-├── .gitignore
-├── README.md
-└── LICENSE
+frontend/ → Chatbot UI (HTML)
+workflow/ → n8n Workflow JSON
+assets/ → Images & Screenshots
 
 ---
 
@@ -115,13 +92,13 @@ n8n-ai-chatbot-automation/
 ![Result](assets/result.png)
 
 
-
 ---
 
 ## 👤 Author
 **Aditya Singh**  
 Founder – InnovaBurst
 
+---
 ## ⭐ Support
 - If you found this project useful:
 - Give it a ⭐ on GitHub
