@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InnovaBurst AI | Premium Chat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* --- VARIABLES & RESET --- */
+    :root {
+      --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --bot-bg: #f0f2f5;
+      --user-bg: #667eea;
+      --glass-bg: rgba(255, 255, 255, 0.85);
+      --glass-border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      /* Animated Background */
+      background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* --- CHAT CONTAINER --- */
+    .chatbox {
+      width: 420px;
+      max-width: 95%;
+      height: 85vh;
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px); /* Real Glass Blur */
+      -webkit-backdrop-filter: blur(12px);
+      border: var(--glass-border);
+      border-radius: 24px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+      transition: transform 0.3s ease;
+    }
+
+    /* --- HEADER --- */
+    .chat-header {
+      background: rgba(255,255,255,0.9);
+      padding: 18px 25px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+      z-index: 10;
+    }
+
+    .avatar-container {
+      position: relative;
+      margin-right: 15px;
+    }
+
+    .bot-avatar {
+      width: 45px;
+      height: 45px;
+      background: var(--primary-gradient);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 20px;
+      box-shadow: 0 4px 10px rgba(118, 75, 162, 0.3);
+    }
+
+    .status-dot {
+      position: absolute;
+      bottom: 2px;
+      right: 0;
+      width: 12px;
+      height: 12px;
+      background: #2ecc71;
+      border: 2px solid white;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
+      70% { box-shadow: 0 0 0 6px rgba(46, 204, 113, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+    }
+
+    .chat-header h3 {
+      font-size: 18px;
+      color: #2c3e50;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    
+    .chat-header p {
+      font-size: 12px;
+      color: #7f8c8d;
+      font-weight: 400;
+    }
+
+    /* --- MESSAGES AREA --- */
+    .messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Scrollbar Styling */
+    .messages::-webkit-scrollbar { width: 5px; }
+    .messages::-webkit-scrollbar-thumb { background-color: rgba(0,0,0,0.1); border-radius: 10px; }
+
+    .msg-wrapper {
+      display: flex;
+      flex-direction: column;
+      max-width: 80%;
+      animation: slideUp 0.4s ease-out;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .msg {
+      padding: 14px 18px;
+      border-radius: 18px;
+      font-size: 14px;
+      line-height: 1.6;
+      position: relative;
+      word-wrap: break-word;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    /* Bot Message */
+    .bot-wrapper { align-self: flex-start; }
+    .bot {
+      background: var(--bot-bg);
+      color: #333;
+      border-bottom-left-radius: 4px;
+    }
+
+    /* User Message */
+    .user-wrapper { align-self: flex-end; }
+    .user {
+      background: var(--primary-gradient);
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+
+    .timestamp {
+      font-size: 10px;
+      margin-top: 5px;
+      opacity: 0.7;
+    }
+    .bot-wrapper .timestamp { margin-left: 5px; color: #888; }
+    .user-wrapper .timestamp { margin-right: 5px; text-align: right; color: #fff; }
+
+    /* --- TYPING INDICATOR (Bubbles) --- */
+    .typing-container {
+      display: none; /* Hidden initially */
+      align-self: flex-start;
+      background: var(--bot-bg);
+      padding: 10px 15px;
+      border-radius: 18px;
+      border-bottom-left-radius: 4px;
+      margin-bottom: 10px;
+      width: fit-content;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      animation: slideUp 0.3s ease-out;
+    }
+
+    .typing-dots {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      background: #999;
+      border-radius: 50%;
+      animation: bounce 1.4s infinite ease-in-out both;
+    }
+
+    .dot:nth-child(1) { animation-delay: -0.32s; }
+    .dot:nth-child(2) { animation-delay: -0.16s; }
+
+    @keyframes bounce {
+      0%, 80%, 100% { transform: scale(0); }
+      40% { transform: scale(1); }
+    }
+
+    /* --- INPUT AREA --- */
+    .input-area {
+      padding: 20px;
+      background: rgba(255,255,255,0.95);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-top: 1px solid rgba(0,0,0,0.05);
+    }
+
+    input {
+      flex: 1;
+      padding: 14px 20px;
+      background: #f4f6f8;
+      border: 1px solid transparent;
+      border-radius: 30px;
+      outline: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      transition: all 0.3s;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+    }
+
+    input:focus {
+      background: #fff;
+      border-color: #764ba2;
+      box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.1);
+    }
+
+    button {
+      width: 50px;
+      height: 50px;
+      border: none;
+      background: var(--primary-gradient);
+      color: white;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 18px;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 5px 15px rgba(118, 75, 162, 0.3);
+    }
+
+    button:hover {
+      transform: scale(1.1) rotate(-10deg);
+      box-shadow: 0 8px 20px rgba(118, 75, 162, 0.5);
+    }
+
+    button:active { transform: scale(0.95); }
+
+    /* Mobile Responsive */
+    @media (max-width: 480px) {
+      .chatbox { width: 100%; height: 100vh; border-radius: 0; }
+      .chat-header { border-radius: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="chatbox">
+  <div class="chat-header">
+    <div class="avatar-container">
+      <div class="bot-avatar"><i class="fas fa-robot"></i></div>
+      <div class="status-dot"></div>
+    </div>
+    <div>
+      <h3>InnovaBurst AI</h3>
+      <p>Always here to help</p>
+    </div>
+  </div>
+
+  <div class="messages" id="messages">
+    <div class="msg-wrapper bot-wrapper">
+      <div class="msg bot">Hello! 👋 I am <strong>InnovaBurst</strong>. How can I help you elevate your business today?</div>
+      <div class="timestamp" id="init-time"></div>
+    </div>
+  </div>
+
+  <div class="typing-container" id="loading">
+    <div class="typing-dots">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+
+  <div class="input-area">
+    <input type="text" id="input" placeholder="Type your message here..." onkeypress="handleEnter(event)" autocomplete="off" />
+    <button onclick="sendMessage()">
+      <i class="fas fa-paper-plane"></i>
+    </button>
+  </div>
+</div>
+
+<script>
+  const webhookURL = "https://n8n-1-a3m1.onrender.com/webhook/innovaburst-chat";
+
+  // Set initial timestamp
+  document.getElementById("init-time").innerText = getCurrentTime();
+
+  // Session Management
+  let sessionId = localStorage.getItem("session_id");
+  if (!sessionId) {
+    sessionId = "web-" + crypto.randomUUID();
+    localStorage.setItem("session_id", sessionId);
+  }
+
+  const messagesDiv = document.getElementById("messages");
+  const input = document.getElementById("input");
+  const loadingDiv = document.getElementById("loading");
+
+  function handleEnter(e) {
+    if (e.key === "Enter") sendMessage();
+  }
+
+  function getCurrentTime() {
+    return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function addMessage(text, sender) {
+    const wrapper = document.createElement("div");
+    wrapper.className = `msg-wrapper ${sender}-wrapper`;
+    
+    // Check if text contains basic HTML (simple bolding/newlines support)
+    // Replacing newlines with <br> for better formatting
+    const formattedText = text.replace(/\n/g, "<br>");
+
+    const msgDiv = document.createElement("div");
+    msgDiv.className = `msg ${sender}`;
+    msgDiv.innerHTML = formattedText; // Using innerHTML for bold/br tags
+
+    const timeDiv = document.createElement("div");
+    timeDiv.className = "timestamp";
+    timeDiv.innerText = getCurrentTime();
+
+    wrapper.appendChild(msgDiv);
+    wrapper.appendChild(timeDiv);
+    
+    // Insert before the loading indicator (so loading stays at bottom if visible)
+    // But usually we hide loading before adding.
+    messagesDiv.appendChild(wrapper);
+    scrollToBottom();
+  }
+
+  function scrollToBottom() {
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  }
+
+  async function sendMessage() {
+    const text = input.value.trim();
+    if (!text) return;
+
+    // 1. Add User Message
+    addMessage(text, "user");
+    input.value = "";
+    input.focus();
+
+    // 2. Show Typing Indicator inside the message area
+    loadingDiv.style.display = "block";
+    messagesDiv.appendChild(loadingDiv); // Move loader to bottom
+    scrollToBottom();
+
+    try {
+      // 3. Send Request
+      const res = await fetch(webhookURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: text,
+          session_id: sessionId
+        })
+      });
+
+      const data = await res.json();
+      
+      // 4. Hide Typing & Add Bot Response
+      loadingDiv.style.display = "none";
+      
+      // Use response or fallback
+      const botReply = data.response || "I didn't quite catch that.";
+      addMessage(botReply, "bot");
+
+    } catch (err) {
+      loadingDiv.style.display = "none";
+      addMessage("⚠️ Oops! I am having trouble connecting right now.", "bot");
+      console.error(err);
+    }
+  }
+</script>
+
+</body>
+</html>
