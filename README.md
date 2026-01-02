@@ -57,7 +57,10 @@ Frontend UI → Webhook → AI Agent → Chat Memory → Response
 ---
 
 ## 📸 Screenshots
-(Add images inside assets folder)
+![Chatbot UI](assets/chatbot-ui.png)
+![Workflow](assets/workflow.png)
+![Result](assets/result.png)
+
 
 ---
 
