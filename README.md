@@ -1,21 +1,40 @@
 # 🚀 n8n AI Chatbot Automation
 
 A professional AI-powered website chatbot built using n8n automation and a custom frontend UI.
+This project showcases how to connect a website chatbot with an AI Agent using webhooks, memory, and real-time responses.
 
 ---
 
 ## 🔹 Project Overview
-This project demonstrates how to connect a website chatbot to an AI agent using n8n workflows.
-The chatbot handles user conversations, remembers context, and responds in real time.
+This project demonstrates:
+
+- How a website chatbot sends user messages to n8n
+
+- How an AI Agent processes conversations
+
+- How chat memory maintains context
+
+- How responses are sent back to the frontend in real time
+
+The chatbot is suitable for business websites, automation demos, and AI product showcases.
 
 ---
 
-## 🧠 Features
-- Website chatbot connected via webhook
-- AI Agent for smart responses
-- Chat memory for conversation context
+## 🧠 Key Features
+
+- Website chatbot connected via Webhook
+
+- AI Agent for intelligent responses
+
+- Chat Memory for context retention
+
+- Real-time message handling
+
 - JSON-based API communication
-- Clean and modern UI
+
+- Clean, modern chatbot UI
+
+- Fully automated backend using n8n
 
 ---
 
@@ -28,23 +47,55 @@ The chatbot handles user conversations, remembers context, and responds in real 
 ---
 
 ## ⚙️ Workflow Flow
-Frontend UI → Webhook → AI Agent → Chat Memory → Response
+
+Frontend UI
+   ↓
+Webhook Trigger (n8n)
+   ↓
+AI Agent (OpenRouter Model)
+   ↓
+Chat Memory (Context)
+   ↓
+Respond to Webhook
+   ↓
+Frontend UI
 
 ---
 
-## 📂 Folder Structure
-- frontend/ → Chatbot UI (HTML)
-- workflow/ → n8n Workflow JSON
-- assets/ → Images & Screenshots
+## 📂 Project Structure
+
+n8n-ai-chatbot-automation/
+│
+├── frontend/
+│   └── chatbot.html
+│
+├── workflow/
+│   └── n8n-workflow.json
+│
+├── assets/
+│   ├── chatbot-ui.png
+│   ├── workflow.png
+│   └── result.png
+│
+├── .gitignore
+├── README.md
+└── LICENSE
 
 ---
 
 ## 🚀 How to Use
+
 1. Import the workflow JSON into n8n
+
 2. Activate the workflow
-3. Copy the webhook URL
-4. Paste webhook URL in `chatbot.html`
-5. Open the chatbot in browser
+
+3. Copy the Webhook URL
+
+4. Paste the webhook URL inside chatbot.html
+
+5. Open chatbot.html in your browser
+
+6. Start chatting with the AI chatbot
 
 ---
 
@@ -53,6 +104,8 @@ Frontend UI → Webhook → AI Agent → Chat Memory → Response
 - AI assistant demo
 - Lead generation bot
 - n8n automation showcase
+- Customer support automation
+- Portfolio project for developers
 
 ---
 
@@ -68,4 +121,10 @@ Frontend UI → Webhook → AI Agent → Chat Memory → Response
 ## 👤 Author
 **Aditya Singh**  
 Founder – InnovaBurst
+
+## ⭐ Support
+- If you found this project useful:
+- Give it a ⭐ on GitHub
+- Share it on LinkedIn
+- Fork it and build your own automation 🚀
 
