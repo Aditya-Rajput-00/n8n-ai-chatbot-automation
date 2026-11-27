@@ -82,7 +82,7 @@ assets/ → Images & Screenshots
 - Lead generation bot
 - n8n automation showcase
 - Customer support automation
-- Portfolio project for developers
+- Portfolio project for developers.
 
 ---
 
@@ -105,3 +105,14 @@ Founder – InnovaBurst
 - Share it on LinkedIn
 - Fork it and build your own automation 🚀
 
+## 👥 Contributors
+
+We would like to thank everyone who contributed to this project.
+
+| Contributor | Role |
+|---|---|
+| Aditya | Project Development |
+| Your Name | Project Contribution |
+
+### 🤝 Contributions
+Both contributors worked together to improve and maintain the n8n AI Chatbot Automation project.
