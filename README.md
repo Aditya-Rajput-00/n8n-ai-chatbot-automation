@@ -112,7 +112,7 @@ We would like to thank everyone who contributed to this project.
 | Contributor | Role |
 |---|---|
 | Aditya | Project Development |
-| Your Name | Project Contribution |
+| Pranav | Project Contribution |
 
 ### 🤝 Contributions
 Both contributors worked together to improve and maintain the n8n AI Chatbot Automation project.
